@@ -1,0 +1,18 @@
+﻿services:
+  weatherapp.api:
+    image: weatherapp.api
+    container_name: weatherapp.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    build:
+      context: .
+      dockerfile: WeatherApp.Api/Dockerfile
+    ports:
+      - "8000:8080"
+      - "8001:8081"
+  weatherapp.redis:
+    image: redis:latest
+    container_name: weatherapp.redis
+    restart: always
+    ports:
+      - "6379:6379"

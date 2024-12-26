@@ -19,7 +19,7 @@ public class WeatherWebProvider : WeatherProvider
         {
             var client = _httpClientFactory.CreateClient("weather");
 
-            var response = await client.GetAsync($"{weatherProviderParams.city}");
+            var response = await client.GetAsync($"{weatherProviderParams.City}");
 
             return await HandleResponse(response);
         }

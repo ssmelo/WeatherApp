@@ -17,7 +17,17 @@ public class CachedWeatherProvider : WeatherProvider
 
     public async Task<WeatherProviderResponse?> GetWeather(WeatherProviderParams weatherProviderParams)
     {
-        var cacheResponse = await _cache.GetStringAsync(weatherProviderParams.city);
+        if (!weatherProviderParams.Cache)
+        {
+            return await _provider.GetWeather(weatherProviderParams);
+        }
+
+        return await ProcessCacheResponse(weatherProviderParams);
+    }
+
+    private async Task<WeatherProviderResponse?> ProcessCacheResponse(WeatherProviderParams weatherProviderParams)
+    {
+        var cacheResponse = await _cache.GetStringAsync(weatherProviderParams.City);
         if (!string.IsNullOrWhiteSpace(cacheResponse))
         {
             return JsonSerializer.Deserialize<WeatherProviderResponse>(cacheResponse);
@@ -26,7 +36,7 @@ public class CachedWeatherProvider : WeatherProvider
         var result = await _provider.GetWeather(weatherProviderParams);
         
         _cache.SetStringAsync(
-            weatherProviderParams.city,
+            weatherProviderParams.City,
             JsonSerializer.Serialize(result),
             new DistributedCacheEntryOptions
             {

@@ -1,6 +1,5 @@
 ﻿namespace WeatherApp.Application.Services;
 
-public record WeatherProviderParams(
-    String city)
+public record WeatherProviderParams(String City, Boolean Cache)
 {
 }

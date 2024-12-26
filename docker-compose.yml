@@ -4,15 +4,30 @@
     container_name: weatherapp.api
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://weatherapp.dashboard:18889
     build:
       context: .
       dockerfile: WeatherApp.Api/Dockerfile
     ports:
       - "8000:8080"
       - "8001:8081"
+    networks:
+      - otel
   weatherapp.redis:
     image: redis:latest
     container_name: weatherapp.redis
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - otel
+  weatherapp.dashboard:
+    image: mcr.microsoft.com/dotnet/nightly/aspire-dashboard:latest
+    container_name: dashboard
+    ports:
+      - "18888:18888"
+    networks:
+      - otel
+
+networks:
+  otel:

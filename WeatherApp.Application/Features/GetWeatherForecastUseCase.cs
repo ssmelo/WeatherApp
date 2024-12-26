@@ -20,6 +20,6 @@ public class GetWeatherForecastUseCase
                return new GetWeatherForecastResponse(weatherResponse.days);
           }
           
-          throw new GetWeatherForecastException("Weather forecast not found for the given city.", ErrorType.NOT_FOUND);
+          throw new GetWeatherForecastException($"Weather forecast not found for the given city: {getWeatherForecastQuery.city}", ErrorType.NOT_FOUND);
      }
 }

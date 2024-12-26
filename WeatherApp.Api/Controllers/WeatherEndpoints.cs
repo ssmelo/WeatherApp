@@ -8,11 +8,17 @@ public static class WeatherEndpoints
     public static void AddWeatherEndpoints(this IEndpointRouteBuilder app)
     {
         app.MapGet("/weatherforecast/{city}", async ([FromServices] GetWeatherForecastUseCase getWeatherForecast,
-            [FromRoute] string city) =>
-            {
-                return Results.Ok(await getWeatherForecast.Query(new GetWeatherForecastQuery(city)));
-            })
-            .WithName("GetWeatherForecast")
-            .WithOpenApi();
+                ILogger<Program> logger,
+                [FromRoute] string city) =>
+                {
+                    logger.LogInformation("Receiving GET weatherforecast: {city}", city);
+                    
+                    var result = await getWeatherForecast.Query(new GetWeatherForecastQuery(city));
+                    
+                    logger.LogInformation("Success GET weatherforecast: {city}", city);
+                    return Results.Ok(result);
+                })
+                .WithName("GetWeatherForecast")
+                .WithOpenApi();
     }
 }

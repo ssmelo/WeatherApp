@@ -11,7 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
         .AddPresentation()
         .AddApplication()
         .AddLoggingProvider()
-        .AddCacheProvider(builder.Configuration);
+        .AddCacheProvider(builder.Configuration)
+        .AddTelemetryProvider(builder.Logging);
 }
 
 var app = builder.Build();
